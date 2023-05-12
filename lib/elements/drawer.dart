@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:thesis2/config/app_colors.dart';
+
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key}) : super(key: key);
+
+  @override
+  _MyDrawerState createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: mainThemeColor, // set desired background color here
+        child: Column(
+          children: [
+            const UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: secondaryThemeColor,
+              ),
+              accountName: Text(
+                'John Doe',
+                style: TextStyle(
+                  color: mainTextColor,
+                ),
+              ),
+              accountEmail: Text(
+                'diushes1712@gmail.com',
+                style: TextStyle(
+                  color: secondaryTextColor,
+                ),
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/avatar.jpg'),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text(
+                'Settings',
+                style: TextStyle(
+                  color: mainTextColor,
+                ),
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Text('Help',
+                  style: TextStyle(
+                    color: mainTextColor,
+                  )),
+              onTap: () {
+                Navigator.pop(context); // close the drawer
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyScreen()));
+              },
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: mainTextColor,
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MyScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Screen'),
+      ),
+      body: Center(
+        child: Text('This is my screen!'),
+      ),
+    );
+  }
+}
