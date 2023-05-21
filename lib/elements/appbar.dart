@@ -4,11 +4,14 @@ import 'package:thesis2/config/app_colors.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double _heightRatio = 0.1; // 10% of screen height
   final BuildContext context;
-  final IconData drawerIcon;
+  final bool hasBackButton;
+  final IconData? drawerIcon;
+
   MyAppBar({
     Key? key,
     required this.context,
-    this.drawerIcon = Icons.menu,
+    this.hasBackButton = false,
+    this.drawerIcon,
   }) : super(key: key);
 
   @override
@@ -16,14 +19,28 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: mainThemeColor,
       elevation: 0,
-      leading: IconButton(
-        icon: Icon(
-          drawerIcon,
-          size: 35,
-          color: mainTextColor, // set the desired size of the icon here
-        ),
-        onPressed: () => Scaffold.of(context).openDrawer(),
-      ),
+      leading: hasBackButton
+          ? SizedBox(
+              width: 80,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: 20,
+                  color: mainTextColor,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            )
+          : (drawerIcon != null
+              ? IconButton(
+                  icon: Icon(
+                    drawerIcon,
+                    size: 35,
+                    color: mainTextColor,
+                  ),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                )
+              : Container()),
     );
   }
 

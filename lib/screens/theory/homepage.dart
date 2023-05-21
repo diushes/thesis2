@@ -3,14 +3,42 @@ import 'package:thesis2/config/app_colors.dart';
 import 'package:thesis2/elements/appbar.dart';
 import 'package:thesis2/elements/bottombar.dart';
 import 'package:thesis2/elements/drawer.dart';
-import '../elements/card1.dart';
+import '../../API/theory/api_service.dart';
+import '../../elements/theory/card1.dart';
+// Import the data service file
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<dynamic> categories = []; // Store the fetched categories here
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData(); // Call the data fetching method when the widget initializes
+  }
+
+  Future<void> fetchData() async {
+    try {
+      List<dynamic> fetchedCategories = await APIService.fetchCategories();
+      setState(() {
+        categories = fetchedCategories;
+      });
+    } catch (e) {
+      // Handle error if fetching fails
+      print('Error fetching categories: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mainThemeColor,
       appBar: MyAppBar(
+        hasBackButton: false,
         context: context,
       ),
       body: Column(
@@ -43,32 +71,16 @@ class MyHomePage extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
                 childAspectRatio: 0.7,
-                children: [
-                  Card1(
-                    title: 'Title 1',
-                    subtitle: 'Subtitle 1',
-                    image: 'assets/images/image1.jpg',
-                    onTap: () {},
-                  ),
-                  Card1(
-                    title: 'Title 2',
-                    subtitle: 'Subtitle 2',
-                    image: 'assets/images/image2.jpg',
-                    onTap: () {},
-                  ),
-                  Card1(
-                    title: 'Title 3',
-                    subtitle: 'Subtitle 3',
-                    image: 'assets/images/image1.jpg',
-                    onTap: () {},
-                  ),
-                  Card1(
-                    title: 'Title 4',
-                    subtitle: 'Subtitle 3',
-                    image: 'assets/images/image2.jpg',
-                    onTap: () {},
-                  ),
-                ],
+                children: categories.map((category) {
+                  return Card1(
+                    title: category['title'],
+                    subtitle: 'subtitle',
+                    image: category['image'],
+                    onTap: () {
+                      Navigator.pushNamed(context, '/topics');
+                    },
+                  );
+                }).toList(),
               ),
             ),
           ),

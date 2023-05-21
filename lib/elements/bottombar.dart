@@ -44,17 +44,30 @@ class _MyBottomNavigationBarState extends State<MyBottomNavBar> {
           unselectedItemColor: iconColor,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('assets/icons/theory.png')),
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, "/topics");
+                },
+                child: ImageIcon(AssetImage('assets/icons/theory.png')),
+              ),
               label: 'Theory',
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('assets/icons/quizzes.png')),
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, "/quizzes");
+                },
+                child: ImageIcon(AssetImage('assets/icons/quizzes.png')),
+              ),
               label: 'Tests',
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('assets/icons/forum.png')),
+              icon: GestureDetector(
+                onTap: () {},
+                child: ImageIcon(AssetImage('assets/icons/forum.png')),
+              ),
               label: 'Forum',
             ),
           ],

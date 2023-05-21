@@ -13,82 +13,79 @@ class _MyDrawerState extends State<MyDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: mainThemeColor, // set desired background color here
+        color: secondaryThemeColor, // set desired background color here
         child: Column(
           children: [
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: secondaryThemeColor,
-              ),
-              accountName: Text(
-                'John Doe',
-                style: TextStyle(
-                  color: mainTextColor,
+            const SizedBox(
+              height: 250,
+              child: UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: mainThemeColor,
                 ),
-              ),
-              accountEmail: Text(
-                'diushes1712@gmail.com',
-                style: TextStyle(
-                  color: secondaryTextColor,
-                ),
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/avatar.jpg'),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text(
-                'Settings',
-                style: TextStyle(
-                  color: mainTextColor,
-                ),
-              ),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.help),
-              title: const Text('Help',
+                accountName: Text(
+                  'John Doe',
                   style: TextStyle(
                     color: mainTextColor,
-                  )),
-              onTap: () {
-                Navigator.pop(context); // close the drawer
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyScreen()));
-              },
+                  ),
+                ),
+                accountEmail: Text(
+                  'diushes1712@gmail.com',
+                  style: TextStyle(
+                    color: secondaryTextColor,
+                  ),
+                ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/avatar.jpg'),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+              child: ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text(
+                  'Settings',
+                  style: TextStyle(
+                    color: mainTextColor,
+                  ),
+                ),
+                onTap: () {},
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+              child: ListTile(
+                leading: const Icon(Icons.help),
+                title: const Text('Help',
+                    style: TextStyle(
+                      color: mainTextColor,
+                    )),
+                onTap: () {},
+              ),
             ),
             Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: const Text(
-                    'Logout',
-                    style: TextStyle(
-                      color: mainTextColor,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 20.0),
+                  child: ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: mainTextColor,
+                      ),
                     ),
+                    onTap: () {},
                   ),
-                  onTap: () {},
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MyScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Screen'),
-      ),
-      body: Center(
-        child: Text('This is my screen!'),
       ),
     );
   }
