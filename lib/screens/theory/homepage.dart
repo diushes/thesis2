@@ -8,6 +8,13 @@ import '../../elements/theory/card1.dart';
 // Import the data service file
 
 class MyHomePage extends StatefulWidget {
+  final MyBottomNavBar bottomNavBar; // Define the required argument
+
+  const MyHomePage({
+    Key? key,
+    required this.bottomNavBar, // Mark the argument as required
+  }) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -38,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: mainThemeColor,
       appBar: MyAppBar(
-        hasBackButton: false,
+        drawerIcon: Icons.menu,
         context: context,
       ),
       body: Column(
@@ -67,15 +74,15 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: EdgeInsets.all(16.0),
               child: GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: 1,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
-                childAspectRatio: 0.7,
+                childAspectRatio: 1.2,
                 children: categories.map((category) {
                   return Card1(
                     title: category['title'],
                     subtitle: 'subtitle',
-                    image: category['image'],
+                    image: "assets/images/history.jpg",
                     onTap: () {
                       Navigator.pushNamed(context, '/topics');
                     },
@@ -87,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       drawer: MyDrawer(),
-      bottomNavigationBar: MyBottomNavBar(),
+      bottomNavigationBar: widget.bottomNavBar,
     );
   }
 }

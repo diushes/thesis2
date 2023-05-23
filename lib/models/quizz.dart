@@ -37,3 +37,22 @@ const List sample_data = [
     "answer_index": 2,
   },
 ];
+
+class Quiz {
+  final String title;
+  final String category;
+
+  Quiz({required this.title, required this.category});
+}
+
+List<Quiz> generateQuizzes() {
+  List<Quiz> quizzes = [];
+
+  quizzes.add(Quiz(title: "Quiz 1", category: "Category A"));
+  quizzes.add(Quiz(title: "Quiz 2", category: "Category B"));
+  quizzes.add(Quiz(title: "Quiz 3", category: "Category A"));
+  quizzes.add(Quiz(title: "Quiz 4", category: "Category C"));
+  quizzes.add(Quiz(title: "Quiz 5", category: "Category B"));
+
+  return quizzes;
+}

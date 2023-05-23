@@ -1,39 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:thesis2/controllers/question_controller.dart';
+import 'package:provider/provider.dart';
+import 'package:thesis2/controllers/question_vm.dart';
+import 'package:thesis2/models/test_model.dart';
 import '../../config/constants.dart';
-import '../../models/quizz.dart';
 import 'option.dart';
 
 class QuestionCard extends StatelessWidget {
   const QuestionCard({
     Key? key,
-    required this.question,
+    required this.questionId,
   }) : super(key: key);
 
-  final Question question;
+  final int questionId;
 
   @override
   Widget build(BuildContext context) {
-    QuestionController _controller = Get.put(QuestionController());
+    final tests = context.read<TestVM>().listOfTestModels;
+    // QuestionController _controller = Get.put(QuestionController());
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      padding: EdgeInsets.all(kDefaultPadding),
+      margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      padding: const EdgeInsets.all(kDefaultPadding),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(25)),
       child: Column(
         children: [
           Text(
-            question.question,
-            style: TextStyle(fontSize: 20),
+            tests[0].questions.where((id) => questionId,// question.questionText ?? 'Failed fetch', //Сам вопрос
+            style: const TextStyle(fontSize: 20),
           ),
-          SizedBox(height: kDefaultPadding / 2),
+          const SizedBox(height: kDefaultPadding / 2),
           ...List.generate(
-              question.options.length,
-              (index) => Option(
-                  text: question.options[index],
-                  index: index,
-                  press: () => _controller.checkAns(question, index)))
+            question.options!.length,
+            (index) => Option(
+              text: question.options?[index].optionText ?? '',
+              index: index,
+              press: () {},
+            ),
+          ), //_controller.checkAns(question, index)))
         ],
       ),
     );

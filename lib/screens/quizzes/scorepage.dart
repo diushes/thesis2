@@ -15,13 +15,13 @@ class ScorePage extends StatelessWidget {
         children: [
           Column(
             children: [
-              Spacer(flex: 3),
+              const Spacer(flex: 3),
               Text("Score",
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall
                       ?.copyWith(color: mainTextColor)),
-              Spacer(),
+              const Spacer(),
               Text(
                 "${_qnController.correctAns * 10}/${_qnController.questions.length * 10}",
                 style: Theme.of(context)
@@ -29,10 +29,16 @@ class ScorePage extends StatelessWidget {
                     .headlineSmall
                     ?.copyWith(color: mainTextColor),
               ),
-              Spacer(flex: 3),
+              const Spacer(flex: 3),
             ],
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context).popAndPushNamed('/quizzes');
+        },
+        label: const Text('End'),
       ),
     );
   }

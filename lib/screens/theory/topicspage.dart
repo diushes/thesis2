@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:thesis2/config/app_colors.dart';
 import 'package:thesis2/elements/appbar.dart';
 import 'package:thesis2/elements/bottombar.dart';
+import '../../API/theory/fake_api.dart';
+import '../../elements/theory/card2.dart';
 
 class TopicsPage extends StatelessWidget {
+  final MyBottomNavBar bottomNavBar;
+
+  const TopicsPage({Key? key, required this.bottomNavBar}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,63 +28,32 @@ class TopicsPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: topics.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/topicDetail',
-                        arguments: topics[index]);
-                    print('Selected topic: ${topics[index].name}');
-                  },
-                  child: Card(
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            topics[index].image,
-                            width: 50,
-                            height: 50,
-                          ),
-                          SizedBox(width: 16),
-                          Text(
-                            topics[index].name,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final cardHeight =
+                    constraints.maxHeight * 0.2; // 10% of screen height
+                return ListView.builder(
+                  itemCount: topics.length,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      height: cardHeight,
+                      child: Card2(
+                        title: topics[index].name,
+                        onTap: () {
+                          Navigator.pushNamed(context, '/topicDetail',
+                              arguments: topics[index]);
+                          print('Selected topic: ${topics[index].name}');
+                        },
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               },
             ),
           ),
         ],
       ),
-      bottomNavigationBar: MyBottomNavBar(),
+      bottomNavigationBar: bottomNavBar,
     );
   }
 }
-
-class Topic {
-  final String name;
-  final String image;
-  final List<dynamic> content;
-
-  Topic({required this.name, required this.image, required this.content});
-}
-
-List<Topic> topics = [
-  Topic(
-    name: 'Topic 1',
-    image: 'assets/images/image1.jpg',
-    content: [
-      'This is some text content.And some additional text.',
-    ],
-  ),
-  Topic(name: 'Topic 2', image: 'assets/images/image2.jpg', content: ["abc"]),
-  Topic(name: 'Topic 3', image: 'assets/images/image1.jpg', content: ["abc"]),
-  // Add more topics as needed
-];

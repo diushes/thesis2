@@ -6,7 +6,7 @@ const secondaryThemeColor = Color(0xFFffffff);
 const mainTextColor = Color(0xFF75777b);
 const secondaryTextColor = Color(0xFFcfd1d8);
 const cardColor = Color(0xFFf9f9f9);
-const iconColor = Color(0xFFc3c9b8);
+const iconColor = Color(0xFFefefef);
 const primaryGradient = LinearGradient(
   colors: [Color(0xFF46A0AE), Color(0xFF00FFCB)],
   begin: Alignment.centerLeft,

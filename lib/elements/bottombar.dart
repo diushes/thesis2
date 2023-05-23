@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:thesis2/config/app_colors.dart';
 
 class MyBottomNavBar extends StatefulWidget {
-  const MyBottomNavBar({Key? key}) : super(key: key);
+  final int selectedIndex;
+  const MyBottomNavBar({Key? key, required this.selectedIndex})
+      : super(key: key);
 
   @override
   State<MyBottomNavBar> createState() => _MyBottomNavigationBarState();
@@ -11,25 +13,32 @@ class MyBottomNavBar extends StatefulWidget {
 class _MyBottomNavigationBarState extends State<MyBottomNavBar> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Theory',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Tests',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Forum',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
+  }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+      switch (index) {
+        case 0:
+          Navigator.pushNamed(context, '/');
+          break;
+        case 1:
+          Navigator.pushNamed(context, '/quizzes');
+          break;
+        case 2:
+          Navigator.pushNamed(context, '/quiz');
+          break;
+        case 3:
+          Navigator.pushNamed(context, '/settings');
+          break;
+      }
+    }
   }
 
   @override
@@ -40,7 +49,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavBar> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
         child: BottomNavigationBar(
           backgroundColor: secondaryThemeColor,
-          selectedItemColor: Colors.black,
+          selectedItemColor: mainTextColor,
           unselectedItemColor: iconColor,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
@@ -48,27 +57,38 @@ class _MyBottomNavigationBarState extends State<MyBottomNavBar> {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, "/topics");
+                  _onItemTapped(0);
                 },
                 child: ImageIcon(AssetImage('assets/icons/theory.png')),
               ),
-              label: 'Theory',
+              label: '', // Empty label
             ),
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, "/quizzes");
+                  _onItemTapped(1);
                 },
                 child: ImageIcon(AssetImage('assets/icons/quizzes.png')),
               ),
-              label: 'Tests',
+              label: '', // Empty label
             ),
             BottomNavigationBarItem(
               icon: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  _onItemTapped(2);
+                },
                 child: ImageIcon(AssetImage('assets/icons/forum.png')),
               ),
-              label: 'Forum',
+              label: '', // Empty label
+            ),
+            BottomNavigationBarItem(
+              icon: GestureDetector(
+                onTap: () {
+                  _onItemTapped(3);
+                },
+                child: ImageIcon(AssetImage('assets/icons/setting.png')),
+              ),
+              label: '', // Empty label
             ),
           ],
           currentIndex: _selectedIndex,
