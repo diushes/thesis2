@@ -65,10 +65,10 @@ class Questions {
 class Options {
   int? id;
   String? optionText;
-  bool? isCorrect;
+  late bool isCorrect;
   int? question;
 
-  Options({this.id, this.optionText, this.isCorrect, this.question});
+  Options({this.id, this.optionText, required this.isCorrect, this.question});
 
   Options.fromJson(Map<String, dynamic> json) {
     id = json['id'];

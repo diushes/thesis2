@@ -1,1 +1,1 @@
-List<String> hardCodedCategories = ["Math", "Russian language"];
+List<String> hdCategories = ["Математика", "Русский язык", "История"];

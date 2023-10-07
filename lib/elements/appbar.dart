@@ -5,13 +5,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double _heightRatio = 0.1; // 10% of screen height
   final BuildContext context;
   final bool hasBackButton;
-  final IconData? drawerIcon;
 
   MyAppBar({
     Key? key,
     required this.context,
     this.hasBackButton = false,
-    this.drawerIcon,
   }) : super(key: key);
 
   @override
@@ -31,16 +29,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onPressed: () => Navigator.of(context).pop(),
               ),
             )
-          : (drawerIcon != null
-              ? IconButton(
-                  icon: Icon(
-                    drawerIcon,
-                    size: 35,
-                    color: mainTextColor,
-                  ),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                )
-              : Container()),
+          : null,
     );
   }
 

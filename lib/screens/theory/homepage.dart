@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:thesis2/config/app_colors.dart';
 import 'package:thesis2/elements/appbar.dart';
 import 'package:thesis2/elements/bottombar.dart';
-import 'package:thesis2/elements/drawer.dart';
 import '../../API/theory/api_service.dart';
 import '../../elements/theory/card1.dart';
-// Import the data service file
+import '../../controllers/theme_provider.dart';
 
 class MyHomePage extends StatefulWidget {
   final MyBottomNavBar bottomNavBar; // Define the required argument
@@ -40,14 +40,17 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> _refreshData() async {
+    await fetchData(); // Fetch data when the user pulls down to refresh
+  }
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
-      backgroundColor: mainThemeColor,
-      appBar: MyAppBar(
-        drawerIcon: Icons.menu,
-        context: context,
-      ),
+      backgroundColor: themeProvider.getCurrentTheme().backgroundColor,
+      appBar: MyAppBar(context: context),
       body: Column(
         children: [
           Container(
@@ -73,27 +76,35 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(16.0),
-              child: GridView.count(
-                crossAxisCount: 1,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 1.2,
-                children: categories.map((category) {
-                  return Card1(
-                    title: category['title'],
-                    subtitle: 'subtitle',
-                    image: "assets/images/history.jpg",
-                    onTap: () {
-                      Navigator.pushNamed(context, '/topics');
-                    },
-                  );
-                }).toList(),
+              child: RefreshIndicator(
+                onRefresh: _refreshData, // Pull-to-refresh callback
+                child: GridView.count(
+                  crossAxisCount: 1,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 1.2,
+                  children: categories.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final category = entry.value;
+                    return Card1(
+                      title: category['title'],
+                      subtitle: "${category['topics'].length} topics",
+                      image: "assets/images/pic${index}.jpg",
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/topics',
+                          arguments: category,
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ),
         ],
       ),
-      drawer: MyDrawer(),
       bottomNavigationBar: widget.bottomNavBar,
     );
   }

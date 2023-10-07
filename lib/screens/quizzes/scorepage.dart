@@ -1,44 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:thesis2/config/app_colors.dart';
-import 'package:thesis2/controllers/question_controller.dart';
+import 'package:thesis2/elements/appbar.dart';
 
-class ScorePage extends StatelessWidget {
-  const ScorePage({Key? key}) : super(key: key);
+import '../../config/app_colors.dart';
+
+class ResultScreen extends StatelessWidget {
+  final int numOfCorrectAnswers;
+
+  const ResultScreen({Key? key, required this.numOfCorrectAnswers})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    QuestionController _qnController = Get.put(QuestionController());
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Column(
-            children: [
-              const Spacer(flex: 3),
-              Text("Score",
-                  style: Theme.of(context)
-                      .textTheme
-                      .displaySmall
-                      ?.copyWith(color: mainTextColor)),
-              const Spacer(),
-              Text(
-                "${_qnController.correctAns * 10}/${_qnController.questions.length * 10}",
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(color: mainTextColor),
+      backgroundColor: mainThemeColor, // Set the desired background color
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Number of Correct Answers:',
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              numOfCorrectAnswers.toString(),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.popAndPushNamed(context, "/quizzes");
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: secondaryThemeColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
               ),
-              const Spacer(flex: 3),
-            ],
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).popAndPushNamed('/quizzes');
-        },
-        label: const Text('End'),
+              child: Text(
+                "Finish",
+                style: TextStyle(color: mainTextColor),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

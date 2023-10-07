@@ -3,28 +3,75 @@ import 'package:thesis2/API/theory/api_service.dart';
 import 'package:thesis2/models/test_model.dart';
 
 class TestVM with ChangeNotifier {
-  final Future<List<TestModel>> listOfTestModels = APIService.fetchTests();
-
-  // Questions getOurQuestionById () async{
-  //   return await listOfTestModels;
-  // }
-
-  void onClose() {
-    // super.onClose();
-    // _animationController.dispose();
-    // _pageController.dispose();
+  TestVM() {
+    getTests();
   }
 
-  void checkAns(Questions question, int selectedIndex) {
-    // _isAnswered = true;
-    // _correctAns = question.answer;
-    // _selectedAns = selectedIndex;
+  List<TestModel> listOfTestModels = [];
+  int numOfCorrectAns = 0;
+  List<int> answeredQuestions = [];
+  Map<int, List<dynamic>> categoryTests = {};
+  List<int?> nonEmptyCategories = [];
 
-    // if (_correctAns == _selectedAns) _numOfCorrectAns++;
-    // _animationController.stop();
-    // update();
-    // Future.delayed(Duration(seconds: 3), () {
-    //   nextQuestion();
-    // });
+  getTests() async {
+    final response = APIService.fetchTests();
+    listOfTestModels = await response;
+    getNonEmptyCategories();
+    await getCategoryTests();
+    notifyListeners();
+    print(categoryTests);
+    return listOfTestModels;
+  }
+
+  getNonEmptyCategories() {
+    nonEmptyCategories =
+        listOfTestModels.map((test) => test.category).toSet().toList();
+  }
+
+  Future<void> getCategoryTests() async {
+    for (final categoryId in nonEmptyCategories) {
+      final response = await APIService.fetchTestsByCategory(categoryId!);
+      final categoryTestList = await response;
+      categoryTests[categoryId] = categoryTestList;
+    }
+    notifyListeners();
+  }
+
+  int findTestIndexByTitle(String title) {
+    for (int i = 0; i < listOfTestModels.length; i++) {
+      if (listOfTestModels[i].title == title) {
+        return i;
+      }
+    }
+    return -1; // Indicates test with given title was not found
+  }
+
+  List<Questions> getOurQuestionsById(int testId) {
+    var questions = listOfTestModels[testId].questions;
+    return questions ?? [];
+  }
+
+  getQuestionOption(int testId, int questionId) {
+    var options = getOurQuestionsById(testId)[questionId].options;
+    return options;
+  }
+
+  void checkAns(bool isCorrect, int questionId) {
+    if (isCorrect) {
+      numOfCorrectAns++;
+    }
+    answeredQuestions.add(questionId);
+    notifyListeners();
+  }
+
+  bool isQuestionAnswered(int questionId) {
+    notifyListeners();
+    return answeredQuestions.contains(questionId);
+  }
+
+  void onClose() {
+    numOfCorrectAns = 0;
+    answeredQuestions.clear();
+    notifyListeners();
   }
 }
