@@ -10,8 +10,8 @@ class TestVM with ChangeNotifier {
   List<TestModel> listOfTestModels = [];
   int numOfCorrectAns = 0;
   List<int> answeredQuestions = [];
-  Map<int, List<dynamic>> categoryTests = {};
-  List<int?> nonEmptyCategories = [];
+  Map<int?, String?> nonEmptyCategories = {}; // Updated type
+  Map<String?, List<dynamic>> categoryTests = {}; // Updated type
 
   getTests() async {
     final response = APIService.fetchTests();
@@ -19,40 +19,33 @@ class TestVM with ChangeNotifier {
     getNonEmptyCategories();
     await getCategoryTests();
     notifyListeners();
-    print(categoryTests);
     return listOfTestModels;
   }
 
   getNonEmptyCategories() {
-    nonEmptyCategories =
-        listOfTestModels.map((test) => test.category).toSet().toList();
+    listOfTestModels.forEach((test) {
+      nonEmptyCategories[test.category] = test.category_title;
+    });
   }
 
   Future<void> getCategoryTests() async {
-    for (final categoryId in nonEmptyCategories) {
+    for (final entry in nonEmptyCategories.entries) {
+      final categoryId = entry.key;
+      final categoryTitle = entry.value;
       final response = await APIService.fetchTestsByCategory(categoryId!);
       final categoryTestList = await response;
-      categoryTests[categoryId] = categoryTestList;
+      categoryTests[categoryTitle] = categoryTestList;
     }
     notifyListeners();
   }
 
-  int findTestIndexByTitle(String title) {
-    for (int i = 0; i < listOfTestModels.length; i++) {
-      if (listOfTestModels[i].title == title) {
-        return i;
-      }
-    }
-    return -1; // Indicates test with given title was not found
-  }
-
-  List<Questions> getOurQuestionsById(int testId) {
+  List<Questions> getOurTestById(int testId) {
     var questions = listOfTestModels[testId].questions;
     return questions ?? [];
   }
 
   getQuestionOption(int testId, int questionId) {
-    var options = getOurQuestionsById(testId)[questionId].options;
+    var options = getOurTestById(testId)[questionId].options;
     return options;
   }
 

@@ -19,7 +19,7 @@ class QuizPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tests = context.watch<TestVM>();
-    final questions = tests.getOurQuestionsById(testId);
+    final questions = tests.getOurTestById(testId);
 
     return Scaffold(
       extendBodyBehindAppBar: true,

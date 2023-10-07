@@ -18,8 +18,7 @@ class QuestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final tests = context.watch<TestVM>();
     final options = tests.getQuestionOption(testId, questionId);
-    final questionText =
-        tests.getOurQuestionsById(testId)[questionId].questionText;
+    final questionText = tests.getOurTestById(testId)[questionId].questionText;
     return Container(
       margin: const EdgeInsets.only(
           top: defaultPadding,

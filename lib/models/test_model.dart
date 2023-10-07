@@ -3,8 +3,14 @@ class TestModel {
   List<Questions>? questions;
   String? title;
   int? category;
+  String? category_title;
 
-  TestModel({this.id, this.questions, this.title, this.category});
+  TestModel(
+      {this.id,
+      this.questions,
+      this.title,
+      this.category,
+      this.category_title});
 
   TestModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -16,6 +22,7 @@ class TestModel {
     }
     title = json['title'];
     category = json['category'];
+    category_title = json['category_title'];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,6 +33,7 @@ class TestModel {
     }
     data['title'] = title;
     data['category'] = category;
+    data['category_title'] = category_title;
     return data;
   }
 }

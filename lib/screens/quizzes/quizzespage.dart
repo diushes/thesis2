@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:thesis2/API/hardcoded.dart';
 import 'package:thesis2/config/app_colors.dart';
 import 'package:thesis2/controllers/question_vm.dart';
 import 'package:thesis2/elements/theory/card2.dart';
@@ -29,22 +28,21 @@ class _QuizzesPageState extends State<QuizzesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final testVM = context.read<TestVM>();
+    final categoryTests = testVM.categoryTests;
     return Scaffold(
       body: FutureBuilder<void>(
         future: _fetchData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // While data is loading, you can display a loading indicator.
             return Center(
               child: CircularProgressIndicator(), // Customize as needed
             );
           } else if (snapshot.hasError) {
-            // Handle error state
             return Center(
-              child: Text('Error: ${snapshot.error}'), // Customize as needed
+              child: Text('Error: ${snapshot.error}'),
             );
           } else {
-            // Once data is loaded, build your UI
             return Column(
               children: [
                 Expanded(
@@ -61,14 +59,15 @@ class _QuizzesPageState extends State<QuizzesPage> {
                       ),
                       Expanded(
                         child: DefaultTabController(
-                          length: hdCategories.length,
+                          length: categoryTests.length,
                           child: Column(
                             children: [
                               TabBar(
-                                tabs: hdCategories.map((category) {
+                                tabs: categoryTests.entries.map((entry) {
+                                  final categoryTitle = entry.key;
                                   return Tab(
                                     child: Text(
-                                      category,
+                                      categoryTitle!,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14,
@@ -88,12 +87,14 @@ class _QuizzesPageState extends State<QuizzesPage> {
                                   color:
                                       mainThemeColor, // Set your desired background color here
                                   child: TabBarView(
-                                    children: hdCategories.map((category) {
+                                    children:
+                                        categoryTests.entries.map((entry) {
+                                      final amount = entry.value.length;
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: ListView.builder(
                                           itemCount:
-                                              10, // Replace with the desired number of items
+                                              amount, // Replace with the desired number of items
                                           itemBuilder: (context, index) {
                                             return SizedBox(
                                               height: 100.0,
@@ -107,7 +108,8 @@ class _QuizzesPageState extends State<QuizzesPage> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           QuizPage(
-                                                              testId: index),
+                                                        testId: index,
+                                                      ),
                                                     ),
                                                   );
                                                 },
