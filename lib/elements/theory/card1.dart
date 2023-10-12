@@ -6,13 +6,13 @@ import '../../config/constants.dart';
 class Card1 extends StatelessWidget {
   final String title;
   final String subtitle;
-  final String image;
+  final String imageUrl;
   final VoidCallback onTap;
 
   Card1({
     required this.title,
     required this.subtitle,
-    required this.image,
+    required this.imageUrl,
     required this.onTap,
   });
 
@@ -34,8 +34,8 @@ class Card1 extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    image,
+                  child: Image.network(
+                    imageUrl, // Use Image.network to load image from URL
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -86,10 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: categories.asMap().entries.map((entry) {
                     final index = entry.key;
                     final category = entry.value;
+                    final imageUrl = category['image'];
                     return Card1(
                       title: category['title'],
                       subtitle: "${category['topics'].length} topics",
-                      image: "assets/images/pic${index}.jpg",
+                      imageUrl: imageUrl,
                       onTap: () {
                         Navigator.pushNamed(
                           context,
